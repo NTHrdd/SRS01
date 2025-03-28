@@ -25,11 +25,10 @@ using namespace std;
  * @param current_pos индекс позиции в тексте
  * @return
  */
-int ParseNumber(const string& expression, int& current_pos)
-{
-    if (current_pos >= expression.length() || !isdigit(expression[current_pos]))
+int ParseNumber(const string& expression, int& current_pos) {
+    if (current_pos >= expression.length() || !isdigit(expression[current_pos])) {
         return 0;
-
+    }
     int num = expression[current_pos++] - '0'; // Преобразуем символ в число
     int next = ParseNumber(expression, current_pos); // Читаем следующие цифры
 
@@ -48,19 +47,19 @@ int ParseNumber(const string& expression, int& current_pos)
  * @param left результат предыдущего шага
  * @return
  */
-int ParseMultiplicationAndDivision(const string& expression, int& current_pos, int left)
-{
-    if (current_pos >= expression.length()) return left;
-
+int ParseMultiplicationAndDivision(const string& expression, int& current_pos, int left) {
+    if (current_pos >= expression.length()) {
+        return left;
+    }
     char op = expression[current_pos];
-    if (op != '*' && op != '/') return left;
-
+    if (op != '*' && op != '/') {
+        return left;
+    }
     current_pos++;
     int right = ParseNumber(expression, current_pos);
 
     if (op == '*') return ParseMultiplicationAndDivision(expression, current_pos, left * right);
-    if (op == '/')
-    {
+    if (op == '/') {
         if (right == 0) {
             wcout << L"Ошибка: деление на 0!\n";
             exit(1);
@@ -78,18 +77,23 @@ int ParseMultiplicationAndDivision(const string& expression, int& current_pos, i
  * @param left результат предыдущего шага
  * @return
  */
-int ParseAdditionAndSubtraction(const string& expression, int& current_pos, int left)
-{
-    if (current_pos >= expression.length()) return left;
-
+int ParseAdditionAndSubtraction(const string& expression, int& current_pos, int left) {
+    if (current_pos >= expression.length()) {
+        return left;
+    }
     char op = expression[current_pos];
-    if (op != '+' && op != '-') return left;
-
+    if (op != '+' && op != '-') {
+        return left;
+    }
     current_pos++;
     int right = ParseMultiplicationAndDivision(expression, current_pos, ParseNumber(expression, current_pos));
 
-    if (op == '+') return ParseAdditionAndSubtraction(expression, current_pos, left + right);
-    if (op == '-') return ParseAdditionAndSubtraction(expression, current_pos, left - right);
+    if (op == '+') {
+        return ParseAdditionAndSubtraction(expression, current_pos, left + right);
+    }
+    if (op == '-') {
+        return ParseAdditionAndSubtraction(expression, current_pos, left - right);
+    }
 }
 
 int main() {
