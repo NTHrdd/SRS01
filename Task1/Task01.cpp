@@ -28,18 +28,14 @@ using namespace std;
  */
 //FIXME: название функции с большой буквы
 //void findAnswer(const vector<vector<int>>& dp, int k, int s, vector<int>& weight, vector<int>& nalog)
-void FindAnswer(const vector<vector<int>>& dp, int k, int s, vector<int>& weight, vector<int>& nalog)
-{
-    if (k == 0)
-    {
+void FindAnswer(const vector<vector<int>>& dp, int k, int s, vector<int>& weight, vector<int>& nalog) {
+    if (k == 0) {
         return;
     }
-    if (dp[k][s] == dp[k - 1][s])
-    {
+    if (dp[k][s] == dp[k - 1][s]) {
         FindAnswer(dp, k - 1, s, weight, nalog);
     }
-    else
-    {
+    else {
         wcout << L"берем артефакт с индексом " << k << L", ";
         FindAnswer(dp, k - 1, s - weight[k], weight, nalog);
     }
@@ -54,17 +50,14 @@ void FindAnswer(const vector<vector<int>>& dp, int k, int s, vector<int>& weight
  * @param weight Вектор весов артефактов.
  * @param nalog Вектор налогов на артефакты.
  */
-void ReadData(ifstream& input, int& num_artifact, int& min_weight, vector<int>& weight, vector<int>& nalog)
-{
+void ReadData(ifstream& input, int& num_artifact, int& min_weight, vector<int>& weight, vector<int>& nalog) {
     input >> num_artifact >> min_weight;
     weight.resize(num_artifact + 1);
     nalog.resize(num_artifact + 1);
-    for (int i = 1; i <= num_artifact; i++)
-    {
+    for (int i = 1; i <= num_artifact; i++) {
         input >> weight[i];//считывание весов и налогов
     }
-    for (int i = 1; i <= num_artifact; i++)
-    {
+    for (int i = 1; i <= num_artifact; i++) {
         input >> nalog[i];
     }
 }
@@ -75,13 +68,11 @@ void ReadData(ifstream& input, int& num_artifact, int& min_weight, vector<int>& 
  * @param weight Вектор весов артефактов.
  * @return Максимальный возможный вес.
  */
-int CalculateMaxWeight(const vector<int>& weight)
-{
+int CalculateMaxWeight(const vector<int>& weight) {
     //FIXME: переименование перемнной на snake_case
     //int maxWeight = 0;
     int max_weight = 0;
-    for (int i = 1; i < weight.size(); i++)
-    {
+    for (int i = 1; i < weight.size(); i++) {
         max_weight += weight[i];//нахождение макс веса для массива
     }
     return max_weight;
@@ -102,13 +93,10 @@ vector<vector<int>> SolveKnapsack(int num_artifact, int max_weight, const vector
     //vector<vector<int>> db(num_artifact + 1, vector<int>(max_weight + 1, 10000000));
     vector<vector<int>> list_artifacts(num_artifact + 1, vector<int>(max_weight + 1, 10000000));
     list_artifacts[0][0] = 0;
-    for (int i = 1; i <= num_artifact; i++)
-    {
-        for (int s = 0; s <= max_weight; s++)
-        {
+    for (int i = 1; i <= num_artifact; i++) {
+        for (int s = 0; s <= max_weight; s++) {
             list_artifacts[i][s] = list_artifacts[i - 1][s];
-            if (s >= weight[i] && list_artifacts[i - 1][s - weight[i]] != 10000000)
-            {
+            if (s >= weight[i] && list_artifacts[i - 1][s - weight[i]] != 10000000) {
                 list_artifacts[i][s] = min(list_artifacts[i][s], list_artifacts[i - 1][s - weight[i]] + nalog[i]);
             }
         }
@@ -126,17 +114,14 @@ vector<vector<int>> SolveKnapsack(int num_artifact, int max_weight, const vector
  * @param weight     Вектор весов.
  * @param nalog      Вектор налогов.
  */
-void FindAndPrintSolution(const vector<vector<int>>& list_artifacts, int num_artifact, int min_weight, int max_weight, vector<int>& weight, vector<int>& nalog)
-{
+void FindAndPrintSolution(const vector<vector<int>>& list_artifacts, int num_artifact, int min_weight, int max_weight, vector<int>& weight, vector<int>& nalog) {
     //FIXME: замена названий на snake_case
     //int minNalog = 10000000;
     //int bestWeight = -1;
     int min_nalog = 10000000, best_weight = -1;
 
-    for (int s = min_weight + 1; s <= max_weight; s++)
-    {
-        if (list_artifacts[num_artifact][s] < min_nalog)
-        {
+    for (int s = min_weight + 1; s <= max_weight; s++) {
+        if (list_artifacts[num_artifact][s] < min_nalog) {
             min_nalog = list_artifacts[num_artifact][s];
             best_weight = s;
         }
@@ -147,8 +132,7 @@ void FindAndPrintSolution(const vector<vector<int>>& list_artifacts, int num_art
     wcout << endl;
 }
 
-int main()
-{
+int main(){
     //FIXME: изменение вывода в консоль на 16 бит для правильного отображения на виндовс
     //setlocale(LC_ALL, "Russian");
     _setmode(_fileno(stdout), _O_U16TEXT);
