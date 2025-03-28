@@ -27,17 +27,13 @@ using namespace std;
  * @param size_board Размер доски (1 < N < 80)
  * @param board Вектор доски
  */
-void ReadData(ifstream& input, int& size_board, vector<vector<int>>& board)
-{
-    if (size_board <= 1 || size_board >= 80)
-    {
+void ReadData(ifstream& input, int& size_board, vector<vector<int>>& board) {
+    if (size_board <= 1 || size_board >= 80) {
         wcerr << L"Некорректный размер доски: " << size_board << L". Должно быть 1 < N < 80\n";
         input.close();
     }
-    for (int i = 0; i < size_board; ++i)
-        {
-        for (int j = 0; j < size_board; ++j)
-        {
+    for (int i = 0; i < size_board; ++i) {
+        for (int j = 0; j < size_board; ++j) {
             input >> board[i][j];
         }
     }
@@ -50,26 +46,21 @@ void ReadData(ifstream& input, int& size_board, vector<vector<int>>& board)
  * @param board Вектор доски
  * @return
  */
-int ComputeMinPath(int size_board, const vector<vector<int>>& board)
-{
+int ComputeMinPath(int size_board, const vector<vector<int>>& board) {
     vector<vector<int>> dp(size_board, vector<int>(size_board, 0));
 
     dp[size_board - 1][0] = board[size_board - 1][0];
 
-    for (int i = size_board - 2; i >= 0; i--)
-    {
+    for (int i = size_board - 2; i >= 0; i--) {
         dp[i][0] = dp[i + 1][0] + board[i][0];
     }
 
-    for (int j = 1; j < size_board; j++)
-    {
+    for (int j = 1; j < size_board; j++) {
         dp[size_board - 1][j] = dp[size_board - 1][j - 1] + board[size_board - 1][j];
     }
 
-    for (int i = size_board - 2; i >= 0; i--)
-    {
-        for (int j = 1; j < size_board; ++j)
-        {
+    for (int i = size_board - 2; i >= 0; i--) {
+        for (int j = 1; j < size_board; ++j) {
             dp[i][j] = min(dp[i + 1][j], dp[i][j - 1]) + board[i][j];
         }
     }
