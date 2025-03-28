@@ -16,12 +16,10 @@ using namespace std;
  * @param num_discharges Количество разрядов
  * @return
  */
-double CountValidNumbers(int base, int num_discharges)
-{
+double CountValidNumbers(int base, int num_discharges) {
 	int dp[4] = {0}, new_dp[4] = {0};
 	dp[0] = base - 1;
-	for (int i=2; i <= num_discharges; i++)
-	{
+	for (int i=2; i <= num_discharges; i++) {
 		new_dp[0] = (dp[0] + dp[1] + dp[2] + dp[3]) * (base - 1);
 		new_dp[1] = dp[0];
 		new_dp[2] = dp[1];
@@ -32,8 +30,7 @@ double CountValidNumbers(int base, int num_discharges)
 	return total - dp[3];
 }
 
-int main()
-{
+int main() {
 	//FIXME: понятные имена переменных + понятное объявление + замена множества переменных на массив
 	//int i,k,n,nz,_nz,oz,_oz,tz,_tz, thz, _thz, fz, _fz;
 	int base, num_discharges;
